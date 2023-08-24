@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Search Info</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="vh-100 d-flex flex-column justify-content-center align-items-center center-div">
+    <div class="" style="width: 250px">
+      <form action="#" class="needs-validation" novalidate>
+        <div>
+          <label for="validationCustom01" class="form-label">NID NO: </label>
+          <input type="text" class="form-control" name="nid" id="validationCustom01" pattern="\b\d{10}\b|\b\d{17}\b"
+            required>
+          <div class="valid-feedback"> Looks good!</div>
+        </div>
+        <div>
+          <label for="validationCustom02" class="form-label">BIRTH NO: </label>
+          <input type="text" class="form-control" name="dob" id="validationCustom02"
+            pattern="\d{2}-0[1-9]-\d{4}|\d{2}-1[012]-\d{4}" required>
+          <div class="valid-feedback"> Looks good!</div>
+        </div>
+        <div class="d-flex justify-content-center">
+          <input id='submit' class="btn btn-primary mt-2" type="submit" value="submit">
+        </div>
+      </form>
+    </div>
+
+    <table class="table table-hover">
+      <tr>
+        <td>Name</td>
+        <td id="name"></td>
+      </tr>
+      <tr>
+        <td>Name English</td>
+        <td id="nameEn"></td>
+      </tr>
+      <tr>
+        <td>Mother</td>
+        <td id="mother"></td>
+      </tr>
+
+      <tr>
+        <td>Father</td>
+        <td id="father"></td>
+      </tr>
+
+      <tr>
+        <td>Spouse</td>
+        <td id="spouse"></td>
+      </tr>
+
+      <tr>
+        <td>Present Address</td>
+        <td id="presentAddress"></td>
+      </tr>
+
+
+
+    </table>
+  </div>
+
+
+  <script>
+    $(document).ready(function () {
+      $('#submit').click(function (event) {
+        event.preventDefault();
+
+        let nid = $('#validationCustom01').val()
+        let dob = $('#validationCustom02').val()
+        let link = '/' + nid + '/' + dob + '/' + Math.random() * (9 - 0) + 0;
+        console.log(link)
+
+        $.ajax({
+          url: link, // URL to the API endpoint
+          type: 'GET', // HTTP method
+          dataType: 'json', // Expected data type
+          success: function (data) {
+            let name = data.name;
+            let nameEn = data.nameEn;
+            let mother = data.mother;
+            let father = data.father;
+            let presentAddress = data.presentAddress;
+            let spouse = data.success.data.spouse;
+            let presentAddress1 = data.success.data.presentAddress;
+            let permanentAddress = data.success.data.permanentAddress;
+
+            console.log(presentAddress1)
+            console.log(permanentAddress)
+
+
+            $('#name').text(name)
+            $('#nameEn').text(nameEn)
+            $('#mother').text(mother)
+            $('#father').text(father)
+            $('#spouse').text(spouse)
+            $('#presentAddress').text(presentAddress)
+          },
+          error: function (xhr, status, error) {
+            // This function is called when an error occurs
+            console.error(status + ': ' + error);
+          }
+        });
+        console.log('Form submission prevented');
+      });
+    });
+  </script>
+</body>
+
+</html>
